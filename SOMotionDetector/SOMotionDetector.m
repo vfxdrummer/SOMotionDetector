@@ -39,6 +39,10 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 @property (strong, nonatomic) CLLocation *lastLocation;
 @property (nonatomic) SOMotionType previousMotionType;
 
+@property (nonatomic, assign) BOOL isDriving;
+@property (nonatomic, assign) NSTimeInterval lastTotalDrivingTime;
+@property (nonatomic, strong) NSDate* drivingStartTime;
+
 @property (nonatomic, assign) NSUInteger locationSamples;
 
 #pragma mark - Accelerometer manager
@@ -74,6 +78,8 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
         _locationSamples = 0;
         _currentLocation = nil;
         _lastLocation = nil;
+        _totalDrivingTime = 0;
+        _isDriving = NO;
     }
     
     return self;
@@ -160,6 +166,7 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     [[SOLocationManager sharedInstance] stop];
     [self.motionManager stopAccelerometerUpdates];
     [self.motionActivityManager stopActivityUpdates];
+    [self stopDriving];
 }
 
 #pragma mark - Customization Methods
@@ -221,7 +228,7 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     }
 }
 
-- (void)updateDistance {
+- (void)updateDistanceAndTime {
   if (!_currentLocation || !_lastLocation) return;
   CLLocationDistance newDistanceSample = [self.currentLocation distanceFromLocation:self.lastLocation];
   
@@ -237,14 +244,17 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
       _locationSamples++;
       break;
     case MotionTypeAutomotive:
+      if (!_isDriving) {
+        [self startDriving];
+      }
+      [self updateDriving];
       _currentDrivingDistance += newDistanceSample;
       _locationSamples++;
       break;
   }
-  
-  NSLog(@"walking distance : %f", _currentWalkingDistance);
-  NSLog(@"running distance : %f", _currentRunningDistance);
-  NSLog(@"driving distance : %f", _currentDrivingDistance);
+  if (_isDriving && (_motionType != MotionTypeAutomotive)) {
+    [self stopDriving];
+  }
 }
 
 - (void)detectShaking
@@ -296,6 +306,24 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     }
 }
 
+- (void)startDriving {
+  _isDriving = YES;
+  // cache last driving interval
+  _lastTotalDrivingTime = self.totalDrivingTime;
+  _drivingStartTime = [NSDate date];
+}
+
+- (void)updateDriving {
+  _totalDrivingTime = _lastTotalDrivingTime + [[NSDate date] timeIntervalSinceDate:_drivingStartTime];
+}
+
+- (void)stopDriving {
+  if (!_isDriving) return;
+  // push back new driving interval
+  [self updateDriving];
+  _isDriving = NO;
+}
+
 #pragma mark - LocationManager notification handler
 - (void)handleLocationChangedNotification:(NSNotification *)note
 {
@@ -313,6 +341,6 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     });
 
     [self calculateMotionType];
-    [self updateDistance];
+    [self updateDistanceAndTime];
 }
 @end

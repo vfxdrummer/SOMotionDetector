@@ -60,6 +60,7 @@ typedef enum
 @property (nonatomic, readonly) double currentDrivingDistance;
 @property (nonatomic, readonly) double currentSpeed;
 @property (nonatomic, readonly) CMAcceleration acceleration;
+@property (nonatomic, readonly) NSTimeInterval totalDrivingTime;
 @property (nonatomic, readonly) BOOL isShaking;
 
 
