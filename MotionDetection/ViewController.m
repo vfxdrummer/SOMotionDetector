@@ -31,6 +31,9 @@
 {
 
 }
+@property (weak, nonatomic) IBOutlet UILabel *pointsLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *speedLabel;
 @property (weak, nonatomic) IBOutlet UILabel *motionTypeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *isShakingLabel;
@@ -77,7 +80,12 @@
 
 - (void)motionDetector:(SOMotionDetector *)motionDetector locationChanged:(CLLocation *)location
 {
-    self.speedLabel.text = [NSString stringWithFormat:@"%.2f km/h",motionDetector.currentSpeed * 3.6f];
+  self.speedLabel.text = [NSString stringWithFormat:@"%.2f m/h",motionDetector.currentSpeed * 2.2369];
+  self.pointsLabel.text = [NSString stringWithFormat:@"%.2f pts", motionDetector.drivingPoints];
+  self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi",motionDetector.currentDrivingDistance / 1609.f];
+  long min = (long)motionDetector.totalDrivingTime / 60;
+  long sec = (long)motionDetector.totalDrivingTime % 60;
+  self.timeLabel.text = [NSString stringWithFormat:@"%02d:%02d", min, sec];
 }
 
 - (void)motionDetector:(SOMotionDetector *)motionDetector accelerationChanged:(CMAcceleration)acceleration
