@@ -315,6 +315,7 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 
 - (void)updateDriving {
   _totalDrivingTime = _lastTotalDrivingTime + [[NSDate date] timeIntervalSinceDate:_drivingStartTime];
+  _drivingPoints = ((_currentDrivingDistance / 1609.f) * 100.f) + ((_totalDrivingTime / 60.f) * 20.f);
 }
 
 - (void)stopDriving {
