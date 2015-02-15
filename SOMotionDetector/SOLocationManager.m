@@ -16,7 +16,7 @@
     if (self)
     {
         self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
         self.locationManager.distanceFilter = kCLDistanceFilterNone;
         [self.locationManager requestWhenInUseAuthorization];
         [self.locationManager startMonitoringSignificantLocationChanges];
