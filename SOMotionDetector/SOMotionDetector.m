@@ -36,7 +36,10 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 @property (strong, nonatomic) NSTimer *shakeDetectingTimer;
 
 @property (strong, nonatomic) CLLocation *currentLocation;
+@property (strong, nonatomic) CLLocation *lastLocation;
 @property (nonatomic) SOMotionType previousMotionType;
+
+@property (nonatomic, assign) NSUInteger locationSamples;
 
 #pragma mark - Accelerometer manager
 @property (strong, nonatomic) CMMotionManager *motionManager;
@@ -65,6 +68,12 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleLocationChangedNotification:) name:LOCATION_DID_CHANGED_NOTIFICATION object:nil];
         self.motionManager = [[CMMotionManager alloc] init];
+        _currentWalkingDistance = 0;
+        _currentRunningDistance = 0;
+        _currentDrivingDistance = 0;
+        _locationSamples = 0;
+        _currentLocation = nil;
+        _lastLocation = nil;
     }
     
     return self;
@@ -212,6 +221,32 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     }
 }
 
+- (void)updateDistance {
+  if (!_currentLocation || !_lastLocation) return;
+  CLLocationDistance newDistanceSample = [self.currentLocation distanceFromLocation:self.lastLocation];
+  
+  switch (_motionType) {
+    case MotionTypeNotMoving:
+      break;
+    case MotionTypeWalking:
+      _currentWalkingDistance += newDistanceSample;
+      _locationSamples++;
+      break;
+    case MotionTypeRunning:
+      _currentRunningDistance += newDistanceSample;
+      _locationSamples++;
+      break;
+    case MotionTypeAutomotive:
+      _currentDrivingDistance += newDistanceSample;
+      _locationSamples++;
+      break;
+  }
+  
+  NSLog(@"walking distance : %f", _currentWalkingDistance);
+  NSLog(@"running distance : %f", _currentRunningDistance);
+  NSLog(@"driving distance : %f", _currentDrivingDistance);
+}
+
 - (void)detectShaking
 {
     //Array for collecting acceleration for last one seconds period.
@@ -264,6 +299,7 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 #pragma mark - LocationManager notification handler
 - (void)handleLocationChangedNotification:(NSNotification *)note
 {
+  self.lastLocation = self.currentLocation;
     self.currentLocation = [SOLocationManager sharedInstance].lastLocation;
     _currentSpeed = self.currentLocation.speed;
     if (_currentSpeed < 0)
@@ -277,5 +313,6 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     });
 
     [self calculateMotionType];
+    [self updateDistance];
 }
 @end

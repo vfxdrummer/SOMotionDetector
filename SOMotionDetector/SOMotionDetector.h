@@ -55,6 +55,9 @@ typedef enum
 @property (weak, nonatomic) id<SOMotionDetectorDelegate> delegate;
 
 @property (nonatomic, readonly) SOMotionType motionType;
+@property (nonatomic, readonly) double currentWalkingDistance;
+@property (nonatomic, readonly) double currentRunningDistance;
+@property (nonatomic, readonly) double currentDrivingDistance;
 @property (nonatomic, readonly) double currentSpeed;
 @property (nonatomic, readonly) CMAcceleration acceleration;
 @property (nonatomic, readonly) BOOL isShaking;
