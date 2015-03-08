@@ -30,6 +30,9 @@
 		816CCD6F1AACDF06002384A8 /* FDSettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD461AACD2C8002384A8 /* FDSettingsManager.m */; };
 		816CCD721AACDF5D002384A8 /* NSString+FocusDriving.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD711AACDF5D002384A8 /* NSString+FocusDriving.m */; };
 		816CCD731AACE59B002384A8 /* DS-DIGI.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 816CCD551AACD3CA002384A8 /* DS-DIGI.TTF */; };
+		816CCD761AACE7DF002384A8 /* FDSoundEffectsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD751AACE7DF002384A8 /* FDSoundEffectsManager.m */; };
+		816CCD7A1AACE7FA002384A8 /* SoundEffectTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD791AACE7FA002384A8 /* SoundEffectTool.m */; };
+		816CCD821AACF582002384A8 /* buzzer.wav in Resources */ = {isa = PBXBuildFile; fileRef = 816CCD811AACF582002384A8 /* buzzer.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +78,11 @@
 		816CCD6D1AACDC54002384A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = FocusDriving/Base.lproj/Main.storyboard; sourceTree = SOURCE_ROOT; };
 		816CCD701AACDF5D002384A8 /* NSString+FocusDriving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+FocusDriving.h"; path = "FocusDriving/NSString+FocusDriving.h"; sourceTree = SOURCE_ROOT; };
 		816CCD711AACDF5D002384A8 /* NSString+FocusDriving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+FocusDriving.m"; path = "FocusDriving/NSString+FocusDriving.m"; sourceTree = SOURCE_ROOT; };
+		816CCD741AACE7DF002384A8 /* FDSoundEffectsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FDSoundEffectsManager.h; path = FocusDriving/FDSoundEffectsManager.h; sourceTree = SOURCE_ROOT; };
+		816CCD751AACE7DF002384A8 /* FDSoundEffectsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FDSoundEffectsManager.m; path = FocusDriving/FDSoundEffectsManager.m; sourceTree = SOURCE_ROOT; };
+		816CCD781AACE7FA002384A8 /* SoundEffectTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SoundEffectTool.h; path = FocusDriving/SoundEffectTool.h; sourceTree = SOURCE_ROOT; };
+		816CCD791AACE7FA002384A8 /* SoundEffectTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SoundEffectTool.m; path = FocusDriving/SoundEffectTool.m; sourceTree = SOURCE_ROOT; };
+		816CCD811AACF582002384A8 /* buzzer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = buzzer.wav; path = FocusDriving/buzzer.wav; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +152,7 @@
 				816CCD371AACCEA4002384A8 /* Models */,
 				816CCD361AACCE81002384A8 /* Managers */,
 				816CCD381AACCEC4002384A8 /* ViewControllers */,
+				816CCD771AACE7EA002384A8 /* Tools */,
 				816CCD351AACCDD9002384A8 /* Categories */,
 				3E0EFF1F18C85C5400F9C33B /* Supporting Files */,
 			);
@@ -154,6 +163,7 @@
 		3E0EFF1F18C85C5400F9C33B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				816CCD7D1AACF394002384A8 /* Sounds */,
 				816CCD6C1AACDC54002384A8 /* Main.storyboard */,
 				3E757C5E18C9CF94003D7D49 /* Fonts */,
 				816CCD5F1AACD438002384A8 /* InfoPlist.strings */,
@@ -223,6 +233,8 @@
 		816CCD361AACCE81002384A8 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				816CCD741AACE7DF002384A8 /* FDSoundEffectsManager.h */,
+				816CCD751AACE7DF002384A8 /* FDSoundEffectsManager.m */,
 				816CCD431AACD2C8002384A8 /* FDLocationManager.h */,
 				816CCD441AACD2C8002384A8 /* FDLocationManager.m */,
 				816CCD451AACD2C8002384A8 /* FDSettingsManager.h */,
@@ -246,6 +258,23 @@
 				816CCD4A1AACD2D8002384A8 /* ViewController.m */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		816CCD771AACE7EA002384A8 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				816CCD781AACE7FA002384A8 /* SoundEffectTool.h */,
+				816CCD791AACE7FA002384A8 /* SoundEffectTool.m */,
+			);
+			name = Tools;
+			sourceTree = "<group>";
+		};
+		816CCD7D1AACF394002384A8 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				816CCD811AACF582002384A8 /* buzzer.wav */,
+			);
+			name = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,6 +353,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				816CCD821AACF582002384A8 /* buzzer.wav in Resources */,
 				816CCD731AACE59B002384A8 /* DS-DIGI.TTF in Resources */,
 				816CCD3F1AACD297002384A8 /* Settings.bundle in Resources */,
 				816CCD6E1AACDC54002384A8 /* Main.storyboard in Resources */,
@@ -348,6 +378,8 @@
 			files = (
 				816CCD721AACDF5D002384A8 /* NSString+FocusDriving.m in Sources */,
 				816CCD661AACD9FD002384A8 /* main.m in Sources */,
+				816CCD7A1AACE7FA002384A8 /* SoundEffectTool.m in Sources */,
+				816CCD761AACE7DF002384A8 /* FDSoundEffectsManager.m in Sources */,
 				816CCD6F1AACDF06002384A8 /* FDSettingsManager.m in Sources */,
 				816CCD681AACDA11002384A8 /* UIView+Localizable.m in Sources */,
 				816CCD4B1AACD2D8002384A8 /* ViewController.m in Sources */,

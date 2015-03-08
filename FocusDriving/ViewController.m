@@ -30,6 +30,7 @@
 @interface ViewController ()<SOMotionDetectorDelegate>
 {
 }
+
 @property (weak, nonatomic) IBOutlet UILabel *pointsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;

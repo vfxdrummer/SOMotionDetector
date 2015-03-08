@@ -26,6 +26,7 @@
 
 #import "FDMotionDetector.h"
 #import "FDSettingsManager.h"
+#import "FDSoundEffectsManager.h"
 
 CGFloat kMinimumSpeed        = 0.3f;
 CGFloat kMaximumWalkingSpeed = 1.9f;
@@ -47,6 +48,8 @@ CGFloat kPickupDetectionHoldTime = 10;
 @property (nonatomic, strong) NSDate* drivingStartTime;
 
 @property (nonatomic, assign) NSUInteger locationSamples;
+
+@property (nonatomic, readwrite, strong) FDSoundEffectsManager* sounds;
 
 #pragma mark - Accelerometer manager
 @property (strong, nonatomic) CMMotionManager *motionManager;
@@ -83,6 +86,9 @@ CGFloat kPickupDetectionHoldTime = 10;
     _lastLocation = nil;
     _totalDrivingTime = 0;
     _isDriving = NO;
+    
+    // configure sounds
+    self.sounds = [[FDSoundEffectsManager alloc] init];
   }
   
   return self;
@@ -291,6 +297,7 @@ CGFloat kPickupDetectionHoldTime = 10;
   if ((fabs(_deviceMotion.rotationRate.x) > 1.f) || (fabs(_deviceMotion.rotationRate.y) > 1.f) || (fabs(_deviceMotion.rotationRate.z) > 1.f)) {
     _isPickedUp = YES;
     _pickupDetectingTimerResumeDate = [[NSDate date] dateByAddingTimeInterval:kPickupDetectionHoldTime];
+    [self.sounds playPickupDeviceSound];
   }
 }
 
