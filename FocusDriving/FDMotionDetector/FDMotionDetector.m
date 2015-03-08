@@ -25,6 +25,7 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
 #import "FDMotionDetector.h"
+#import "FDSettingsManager.h"
 
 CGFloat kMinimumSpeed        = 0.3f;
 CGFloat kMaximumWalkingSpeed = 1.9f;
@@ -154,6 +155,11 @@ CGFloat kPickupDetectionHoldTime = 10;
         else if (activity.stationary || activity.unknown)
         {
           _motionType = MotionTypeNotMoving;
+        }
+        
+        // force driving mode override
+        if ([FDSettingsManager forceDrivingMode]) {
+          _motionType = MotionTypeAutomotive;
         }
         
         // If type was changed, then call delegate method
