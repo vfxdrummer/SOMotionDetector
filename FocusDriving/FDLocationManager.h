@@ -20,13 +20,13 @@ typedef enum
   LocationManagetTypeStandartAndSignificant = 0x11
 } SOLocationManagerType;
 
-@interface SOLocationManager : NSObject <CLLocationManagerDelegate>
+@interface FDLocationManager : NSObject <CLLocationManagerDelegate>
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation* lastLocation;
 @property (nonatomic) CLLocationCoordinate2D lastCoordinate;
 
-+ (SOLocationManager *)sharedInstance;
++ (FDLocationManager *)sharedInstance;
 
 /**
  *  Indicates in whether of LocationManagetType state is now the location manager's shared instance.

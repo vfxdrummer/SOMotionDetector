@@ -26,11 +26,11 @@
 
 #import <XCTest/XCTest.h>
 
-@interface MotionDetectionTests : XCTestCase
+@interface FocusDrivingTests : XCTestCase
 
 @end
 
-@implementation MotionDetectionTests
+@implementation FocusDrivingTests
 
 - (void)setUp
 {

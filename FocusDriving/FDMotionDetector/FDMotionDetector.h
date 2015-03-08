@@ -25,10 +25,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
 #import <Foundation/Foundation.h>
-#import "SOLocationManager.h"
+#import "FDLocationManager.h"
 #import <CoreMotion/CoreMotion.h>
 
-@class SOMotionDetector;
+@class FDMotionDetector;
 typedef enum
 {
   MotionTypeNotMoving = 1,
@@ -40,17 +40,18 @@ typedef enum
 @protocol SOMotionDetectorDelegate <NSObject>
 
 @optional
-- (void)motionDetector:(SOMotionDetector *)motionDetector motionTypeChanged:(SOMotionType)motionType;
-- (void)motionDetector:(SOMotionDetector *)motionDetector locationChanged:(CLLocation *)location;
-- (void)motionDetector:(SOMotionDetector *)motionDetector accelerationChanged:(CMAcceleration)acceleration;
-- (void)motionDetector:(SOMotionDetector *)motionDetector rotationRateChanged:(CMRotationRate)rotationRate;
+- (void)motionDetector:(FDMotionDetector *)motionDetector motionTypeChanged:(SOMotionType)motionType;
+- (void)motionDetector:(FDMotionDetector *)motionDetector locationChanged:(CLLocation *)location;
+- (void)motionDetector:(FDMotionDetector *)motionDetector accelerationChanged:(CMAcceleration)acceleration;
+- (void)motionDetector:(FDMotionDetector *)motionDetector rotationRateChanged:(CMRotationRate)rotationRate;
+- (void)motionDetector:(FDMotionDetector *)motionDetector deviceMotionChanged:(CMDeviceMotion*)deviceMotion;
 
 @end
 
-@interface SOMotionDetector : NSObject
+@interface FDMotionDetector : NSObject
 
 #pragma mark - Singleton
-+ (SOMotionDetector *)sharedInstance;
++ (FDMotionDetector *)sharedInstance;
 
 #pragma mark - Properties
 @property (weak, nonatomic) id<SOMotionDetectorDelegate> delegate;
@@ -63,9 +64,9 @@ typedef enum
 @property (nonatomic, readonly) double drivingPoints;
 @property (nonatomic, readonly) CMAcceleration acceleration;
 @property (nonatomic, readonly) CMRotationRate rotationRate;
+@property (nonatomic, readonly) CMDeviceMotion* deviceMotion;
 @property (nonatomic, readonly) NSTimeInterval totalDrivingTime;
 @property (nonatomic, readonly) BOOL isShaking;
-
 
 #pragma mark - Methods
 - (void)startDetection;

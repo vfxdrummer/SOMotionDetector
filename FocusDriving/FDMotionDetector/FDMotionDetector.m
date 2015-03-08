@@ -24,16 +24,18 @@
 // IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
-#import "SOMotionDetector.h"
+#import "FDMotionDetector.h"
 
 CGFloat kMinimumSpeed        = 0.3f;
 CGFloat kMaximumWalkingSpeed = 1.9f;
 CGFloat kMaximumRunningSpeed = 7.5f;
 CGFloat kMinimumRunningAcceleration = 3.5f;
+CGFloat kPickupDetectionHoldTime = 10;
 
-@interface SOMotionDetector()
+@interface FDMotionDetector()
 
-@property (strong, nonatomic) NSTimer *shakeDetectingTimer;
+@property (strong, nonatomic) NSDate *pickupDetectingTimerResumeDate;
+@property (strong, nonatomic) NSTimer *pickupDetectingTimer;
 
 @property (strong, nonatomic) CLLocation *currentLocation;
 @property (strong, nonatomic) CLLocation *lastLocation;
@@ -52,11 +54,11 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 
 @end
 
-@implementation SOMotionDetector
+@implementation FDMotionDetector
 
-+ (SOMotionDetector *)sharedInstance
++ (FDMotionDetector *)sharedInstance
 {
-  static SOMotionDetector *instance = nil;
+  static FDMotionDetector *instance = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     instance = [[self alloc] init];
@@ -99,9 +101,10 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 #pragma mark - Public Methods
 - (void)startDetection
 {
-  [[SOLocationManager sharedInstance] start];
+  [[FDLocationManager sharedInstance] start];
   
-  self.shakeDetectingTimer = [NSTimer scheduledTimerWithTimeInterval:0.01f target:self selector:@selector(detectShaking) userInfo:Nil repeats:YES];
+  self.pickupDetectingTimer = [NSTimer scheduledTimerWithTimeInterval:0.01f target:self selector:@selector(detectPickup) userInfo:Nil repeats:YES];
+  _pickupDetectingTimerResumeDate = [NSDate date];
   
   [self.motionManager startAccelerometerUpdatesToQueue:[[NSOperationQueue alloc] init] withHandler:^(CMAccelerometerData *accelerometerData, NSError *error)
    {
@@ -115,19 +118,18 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
      });
    }];
   
-  [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue]
-                                  withHandler:^(CMGyroData *gyroData, NSError *error)
-  {
-    _rotationRate = gyroData.rotationRate;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if (self.delegate && [self.delegate respondsToSelector:@selector(motionDetector:rotationRateChanged:)])
-      {
-        [self.delegate motionDetector:self rotationRateChanged:self.rotationRate];
-      }
-    });
-  }];
+  [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMDeviceMotion *data, NSError *error)
+   {
+     _deviceMotion = data;
+     dispatch_async(dispatch_get_main_queue(), ^{
+       if (self.delegate && [self.delegate respondsToSelector:@selector(motionDetector:deviceMotionChanged:)])
+       {
+         [self.delegate motionDetector:self deviceMotionChanged:self.deviceMotion];
+       }
+     });
+   }];
   
-  if (self.useM7IfAvailable && [SOMotionDetector motionHardwareAvailable])
+  if (self.useM7IfAvailable && [FDMotionDetector motionHardwareAvailable])
   {
     if (!self.motionActivityManager)
     {
@@ -172,10 +174,10 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 
 - (void)stopDetection
 {
-  [self.shakeDetectingTimer invalidate];
-  self.shakeDetectingTimer = nil;
+  [self.pickupDetectingTimer invalidate];
+  self.pickupDetectingTimer = nil;
   
-  [[SOLocationManager sharedInstance] stop];
+  [[FDLocationManager sharedInstance] stop];
   [self.motionManager stopAccelerometerUpdates];
   [self.motionActivityManager stopActivityUpdates];
   [self stopDriving];
@@ -204,7 +206,7 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 #pragma mark - Private Methods
 - (void)calculateMotionType
 {
-  if (self.useM7IfAvailable && [SOMotionDetector motionHardwareAvailable])
+  if (self.useM7IfAvailable && [FDMotionDetector motionHardwareAvailable])
   {
     return;
   }
@@ -304,7 +306,6 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
       double accZ_2 = powf(acceleration.z,2);
       
       double vectorSum = sqrt(accX_2 + accY_2 + accZ_2);
-      NSLog(@"%f %f %f : %f", accX_2, accY_2, accZ_2, vectorSum);
       
       if (vectorSum >= kMinimumRunningAcceleration)
       {
@@ -316,6 +317,18 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
     
     shakeDataForOneSec = nil;
     currentFiringTimeInterval = 0.0f;
+  }
+}
+
+- (void)detectPickup
+{
+  if ([[NSDate date] compare:_pickupDetectingTimerResumeDate] == NSOrderedAscending) {
+    return;
+  }
+  _isShaking = NO;
+  if ((fabs(_deviceMotion.rotationRate.x) > 1.f) || (fabs(_deviceMotion.rotationRate.y) > 1.f) || (fabs(_deviceMotion.rotationRate.z) > 1.f)) {
+    _isShaking = YES;
+    _pickupDetectingTimerResumeDate = [[NSDate date] dateByAddingTimeInterval:kPickupDetectionHoldTime];
   }
 }
 
@@ -342,7 +355,7 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
 - (void)handleLocationChangedNotification:(NSNotification *)note
 {
   self.lastLocation = self.currentLocation;
-  self.currentLocation = [SOLocationManager sharedInstance].lastLocation;
+  self.currentLocation = [FDLocationManager sharedInstance].lastLocation;
   _currentSpeed = self.currentLocation.speed;
   if (_currentSpeed < 0)
     _currentSpeed = 0;

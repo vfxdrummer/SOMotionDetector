@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Artur Mkrtchyan. All rights reserved.
 //
 
-#import "SOLocationManager.h"
+#import "FDLocationManager.h"
 
-@implementation SOLocationManager
+@implementation FDLocationManager
 
 - (id)init
 {
@@ -28,9 +28,9 @@
   return self;
 }
 
-+ (SOLocationManager *)sharedInstance
++ (FDLocationManager *)sharedInstance
 {
-  __strong static SOLocationManager* instance = nil;
+  __strong static FDLocationManager* instance = nil;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     instance = [[self alloc] init];

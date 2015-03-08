@@ -25,11 +25,10 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
 
 #import "ViewController.h"
-#import "SOMotionDetector.h"
+#import "FDMotionDetector.h"
 
 @interface ViewController ()<SOMotionDetectorDelegate>
 {
-  
 }
 @property (weak, nonatomic) IBOutlet UILabel *pointsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -47,17 +46,17 @@
   [super viewDidLoad];
   // Do any additional setup after loading the view, typically from a nib.
   
-  [SOMotionDetector sharedInstance].delegate = self;
+  [FDMotionDetector sharedInstance].delegate = self;
   if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
   {
-    [SOMotionDetector sharedInstance].useM7IfAvailable = YES; //Use M7 chip if available, otherwise use lib's algorithm
+    [FDMotionDetector sharedInstance].useM7IfAvailable = YES; //Use M7 chip if available, otherwise use lib's algorithm
   }
-  [[SOMotionDetector sharedInstance] startDetection];
+  [[FDMotionDetector sharedInstance] startDetection];
   
 }
 
 #pragma mark - MotiionDetector Delegate
-- (void)motionDetector:(SOMotionDetector *)motionDetector motionTypeChanged:(SOMotionType)motionType
+- (void)motionDetector:(FDMotionDetector *)motionDetector motionTypeChanged:(SOMotionType)motionType
 {
   NSString *type = @"";
   switch (motionType) {
@@ -78,25 +77,24 @@
   self.motionTypeLabel.text = type;
 }
 
-- (void)motionDetector:(SOMotionDetector *)motionDetector locationChanged:(CLLocation *)location
+- (void)motionDetector:(FDMotionDetector *)motionDetector locationChanged:(CLLocation *)location
 {
   self.speedLabel.text = [NSString stringWithFormat:@"%.2f m/h",motionDetector.currentSpeed * 2.2369];
   self.pointsLabel.text = [NSString stringWithFormat:@"%.2f pts", motionDetector.drivingPoints];
   self.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi",motionDetector.currentDrivingDistance / 1609.f];
   long min = (long)motionDetector.totalDrivingTime / 60;
   long sec = (long)motionDetector.totalDrivingTime % 60;
-  self.timeLabel.text = [NSString stringWithFormat:@"%02d:%02d", min, sec];
+  self.timeLabel.text = [NSString stringWithFormat:@"%02ld:%02d", min, sec];
 }
 
-- (void)motionDetector:(SOMotionDetector *)motionDetector accelerationChanged:(CMAcceleration)acceleration
+- (void)motionDetector:(FDMotionDetector *)motionDetector accelerationChanged:(CMAcceleration)acceleration
+{
+}
+
+- (void)motionDetector:(FDMotionDetector *)motionDetector deviceMotionChanged:(CMDeviceMotion*)deviceMotion
 {
   BOOL isShaking = motionDetector.isShaking;
-  self.isShakingLabel.text = isShaking ? @"shaking":@"not shaking";
-}
-
-- (void)motionDetector:(SOMotionDetector *)motionDetector rotationRateChanged:(CMRotationRate)rotationRate
-{
-  NSLog(@"rotationRate : %f %f %f", rotationRate.x, rotationRate.y, rotationRate.z);
+  self.isShakingLabel.text = isShaking ? @"picked up":@"";
 }
 
 @end
