@@ -29,7 +29,7 @@
 
 @interface ViewController ()<SOMotionDetectorDelegate>
 {
-
+  
 }
 @property (weak, nonatomic) IBOutlet UILabel *pointsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
@@ -44,38 +44,38 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-
-    [SOMotionDetector sharedInstance].delegate = self;
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
-    {
-        [SOMotionDetector sharedInstance].useM7IfAvailable = YES; //Use M7 chip if available, otherwise use lib's algorithm
-    }
-    [[SOMotionDetector sharedInstance] startDetection];
-
+  [super viewDidLoad];
+  // Do any additional setup after loading the view, typically from a nib.
+  
+  [SOMotionDetector sharedInstance].delegate = self;
+  if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0"))
+  {
+    [SOMotionDetector sharedInstance].useM7IfAvailable = YES; //Use M7 chip if available, otherwise use lib's algorithm
+  }
+  [[SOMotionDetector sharedInstance] startDetection];
+  
 }
 
 #pragma mark - MotiionDetector Delegate
 - (void)motionDetector:(SOMotionDetector *)motionDetector motionTypeChanged:(SOMotionType)motionType
 {
-    NSString *type = @"";
-    switch (motionType) {
-        case MotionTypeNotMoving:
-            type = @"Not moving";
-            break;
-        case MotionTypeWalking:
-            type = @"Walking";
-            break;
-        case MotionTypeRunning:
-            type = @"Running";
-            break;
-        case MotionTypeAutomotive:
-            type = @"Automotive";
-            break;
-    }
-    
-    self.motionTypeLabel.text = type;
+  NSString *type = @"";
+  switch (motionType) {
+    case MotionTypeNotMoving:
+      type = @"Not moving";
+      break;
+    case MotionTypeWalking:
+      type = @"Walking";
+      break;
+    case MotionTypeRunning:
+      type = @"Running";
+      break;
+    case MotionTypeAutomotive:
+      type = @"Automotive";
+      break;
+  }
+  
+  self.motionTypeLabel.text = type;
 }
 
 - (void)motionDetector:(SOMotionDetector *)motionDetector locationChanged:(CLLocation *)location
@@ -90,8 +90,8 @@
 
 - (void)motionDetector:(SOMotionDetector *)motionDetector accelerationChanged:(CMAcceleration)acceleration
 {
-    BOOL isShaking = motionDetector.isShaking;
-    self.isShakingLabel.text = isShaking ? @"shaking":@"not shaking";
+  BOOL isShaking = motionDetector.isShaking;
+  self.isShakingLabel.text = isShaking ? @"shaking":@"not shaking";
 }
 
 @end

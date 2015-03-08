@@ -14,10 +14,10 @@
 
 typedef enum
 {
-    LocationManagerTypeNone = 0x00,
-    LocationManagerTypeStandart = 0x10,
-    LocationManagerTypeSignificant = 0x01,
-    LocationManagetTypeStandartAndSignificant = 0x11
+  LocationManagerTypeNone = 0x00,
+  LocationManagerTypeStandart = 0x10,
+  LocationManagerTypeSignificant = 0x01,
+  LocationManagetTypeStandartAndSignificant = 0x11
 } SOLocationManagerType;
 
 @interface SOLocationManager : NSObject <CLLocationManagerDelegate>
