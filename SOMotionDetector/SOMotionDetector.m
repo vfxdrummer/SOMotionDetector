@@ -115,6 +115,18 @@ CGFloat kMinimumRunningAcceleration = 3.5f;
      });
    }];
   
+  [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue]
+                                  withHandler:^(CMGyroData *gyroData, NSError *error)
+  {
+    _rotationRate = gyroData.rotationRate;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (self.delegate && [self.delegate respondsToSelector:@selector(motionDetector:rotationRateChanged:)])
+      {
+        [self.delegate motionDetector:self rotationRateChanged:self.rotationRate];
+      }
+    });
+  }];
+  
   if (self.useM7IfAvailable && [SOMotionDetector motionHardwareAvailable])
   {
     if (!self.motionActivityManager)

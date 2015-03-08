@@ -43,6 +43,7 @@ typedef enum
 - (void)motionDetector:(SOMotionDetector *)motionDetector motionTypeChanged:(SOMotionType)motionType;
 - (void)motionDetector:(SOMotionDetector *)motionDetector locationChanged:(CLLocation *)location;
 - (void)motionDetector:(SOMotionDetector *)motionDetector accelerationChanged:(CMAcceleration)acceleration;
+- (void)motionDetector:(SOMotionDetector *)motionDetector rotationRateChanged:(CMRotationRate)rotationRate;
 
 @end
 
@@ -61,6 +62,7 @@ typedef enum
 @property (nonatomic, readonly) double currentSpeed;
 @property (nonatomic, readonly) double drivingPoints;
 @property (nonatomic, readonly) CMAcceleration acceleration;
+@property (nonatomic, readonly) CMRotationRate rotationRate;
 @property (nonatomic, readonly) NSTimeInterval totalDrivingTime;
 @property (nonatomic, readonly) BOOL isShaking;
 

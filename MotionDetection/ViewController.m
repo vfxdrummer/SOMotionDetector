@@ -94,4 +94,9 @@
   self.isShakingLabel.text = isShaking ? @"shaking":@"not shaking";
 }
 
+- (void)motionDetector:(SOMotionDetector *)motionDetector rotationRateChanged:(CMRotationRate)rotationRate
+{
+  NSLog(@"rotationRate : %f %f %f", rotationRate.x, rotationRate.y, rotationRate.z);
+}
+
 @end
