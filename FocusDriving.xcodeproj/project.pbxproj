@@ -21,7 +21,6 @@
 		816CCD471AACD2C8002384A8 /* FDLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD441AACD2C8002384A8 /* FDLocationManager.m */; };
 		816CCD4B1AACD2D8002384A8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD4A1AACD2D8002384A8 /* ViewController.m */; };
 		816CCD541AACD3AB002384A8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 816CCD531AACD3AB002384A8 /* Images.xcassets */; };
-		816CCD561AACD3CA002384A8 /* DS-DIGI.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 816CCD551AACD3CA002384A8 /* DS-DIGI.TTF */; };
 		816CCD611AACD438002384A8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 816CCD5F1AACD438002384A8 /* InfoPlist.strings */; };
 		816CCD661AACD9FD002384A8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD591AACD3EA002384A8 /* main.m */; };
 		816CCD671AACDA01002384A8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD591AACD3EA002384A8 /* main.m */; };
@@ -30,6 +29,7 @@
 		816CCD6E1AACDC54002384A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 816CCD6C1AACDC54002384A8 /* Main.storyboard */; };
 		816CCD6F1AACDF06002384A8 /* FDSettingsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD461AACD2C8002384A8 /* FDSettingsManager.m */; };
 		816CCD721AACDF5D002384A8 /* NSString+FocusDriving.m in Sources */ = {isa = PBXBuildFile; fileRef = 816CCD711AACDF5D002384A8 /* NSString+FocusDriving.m */; };
+		816CCD731AACE59B002384A8 /* DS-DIGI.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 816CCD551AACD3CA002384A8 /* DS-DIGI.TTF */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -324,6 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				816CCD731AACE59B002384A8 /* DS-DIGI.TTF in Resources */,
 				816CCD3F1AACD297002384A8 /* Settings.bundle in Resources */,
 				816CCD6E1AACDC54002384A8 /* Main.storyboard in Resources */,
 			);
@@ -333,7 +334,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				816CCD561AACD3CA002384A8 /* DS-DIGI.TTF in Resources */,
 				816CCD611AACD438002384A8 /* InfoPlist.strings in Resources */,
 				816CCD541AACD3AB002384A8 /* Images.xcassets in Resources */,
 			);

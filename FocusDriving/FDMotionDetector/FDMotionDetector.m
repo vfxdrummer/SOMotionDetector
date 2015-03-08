@@ -223,11 +223,11 @@ CGFloat kPickupDetectionHoldTime = 10;
   }
   else if (_currentSpeed <= kMaximumWalkingSpeed)
   {
-    _motionType = _isShaking ? MotionTypeRunning : MotionTypeWalking;
+    _motionType = _isPickedUp ? MotionTypeRunning : MotionTypeWalking;
   }
   else if (_currentSpeed <= kMaximumRunningSpeed)
   {
-    _motionType = _isShaking ? MotionTypeRunning : MotionTypeAutomotive;
+    _motionType = _isPickedUp ? MotionTypeRunning : MotionTypeAutomotive;
   }
   else
   {
@@ -277,63 +277,19 @@ CGFloat kPickupDetectionHoldTime = 10;
   }
 }
 
-- (void)detectShaking
-{
-  //Array for collecting acceleration for last one seconds period.
-  static NSMutableArray *shakeDataForOneSec = nil;
-  //Counter for calculating complition of one second interval
-  static float currentFiringTimeInterval = 0.0f;
-  
-  currentFiringTimeInterval += 0.01f;
-  if (currentFiringTimeInterval < 1.0f) // if one second time intervall not completed yet
-  {
-    if (!shakeDataForOneSec)
-      shakeDataForOneSec = [NSMutableArray array];
-    
-    // Add current acceleration to array
-    NSValue *boxedAcceleration = [NSValue value:&_acceleration withObjCType:@encode(CMAcceleration)];
-    [shakeDataForOneSec addObject:boxedAcceleration];
-  }
-  else
-  {
-    // Now, when one second was elapsed, calculate shake count in this interval. If the will be at least one shake then
-    // we'll determine it as shaked in all this one second interval.
-    
-    int shakeCount = 0;
-    for (NSValue *boxedAcceleration in shakeDataForOneSec) {
-      CMAcceleration acceleration;
-      [boxedAcceleration getValue:&acceleration];
-      
-      /*********************************
-       *       Detecting shaking
-       *********************************/
-      double accX_2 = powf(acceleration.x,2);
-      double accY_2 = powf(acceleration.y,2);
-      double accZ_2 = powf(acceleration.z,2);
-      
-      double vectorSum = sqrt(accX_2 + accY_2 + accZ_2);
-      
-      if (vectorSum >= kMinimumRunningAcceleration)
-      {
-        shakeCount++;
-      }
-      /*********************************/
-    }
-    _isShaking = shakeCount > 0;
-    
-    shakeDataForOneSec = nil;
-    currentFiringTimeInterval = 0.0f;
-  }
-}
-
 - (void)detectPickup
 {
+  // pickups only valid when user is driving
+  if (_motionType != MotionTypeAutomotive) {
+    _isPickedUp = NO;
+    return;
+  }
   if ([[NSDate date] compare:_pickupDetectingTimerResumeDate] == NSOrderedAscending) {
     return;
   }
-  _isShaking = NO;
+  _isPickedUp = NO;
   if ((fabs(_deviceMotion.rotationRate.x) > 1.f) || (fabs(_deviceMotion.rotationRate.y) > 1.f) || (fabs(_deviceMotion.rotationRate.z) > 1.f)) {
-    _isShaking = YES;
+    _isPickedUp = YES;
     _pickupDetectingTimerResumeDate = [[NSDate date] dateByAddingTimeInterval:kPickupDetectionHoldTime];
   }
 }

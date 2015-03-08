@@ -35,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *speedLabel;
 @property (weak, nonatomic) IBOutlet UILabel *motionTypeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *isShakingLabel;
+@property (weak, nonatomic) IBOutlet UILabel *isPickedUpLabel;
 
 @end
 
@@ -93,8 +93,8 @@
 
 - (void)motionDetector:(FDMotionDetector *)motionDetector deviceMotionChanged:(CMDeviceMotion*)deviceMotion
 {
-  BOOL isShaking = motionDetector.isShaking;
-  self.isShakingLabel.text = isShaking ? @"picked up":@"";
+  BOOL isPickedUp = motionDetector.isPickedUp;
+  self.isPickedUpLabel.text = isPickedUp ? @"picked up":@"";
 }
 
 @end

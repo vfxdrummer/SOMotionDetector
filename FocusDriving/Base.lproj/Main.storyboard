@@ -70,7 +70,7 @@
                     </view>
                     <connections>
                         <outlet property="distanceLabel" destination="d7H-ZA-eai" id="9F2-Fr-I0Y"/>
-                        <outlet property="isShakingLabel" destination="hHy-e5-GIy" id="xIJ-r0-EQH"/>
+                        <outlet property="isPickedUpLabel" destination="hHy-e5-GIy" id="xIJ-r0-EQH"/>
                         <outlet property="motionTypeLabel" destination="txY-Qw-Ohs" id="PF2-VS-hRR"/>
                         <outlet property="pointsLabel" destination="Zc1-VW-87C" id="xg8-u2-aH9"/>
                         <outlet property="speedLabel" destination="K4x-Ar-9Dp" id="QAR-FP-rDu"/>

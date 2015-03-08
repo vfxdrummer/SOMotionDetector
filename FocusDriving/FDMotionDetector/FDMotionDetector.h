@@ -66,7 +66,7 @@ typedef enum
 @property (nonatomic, readonly) CMRotationRate rotationRate;
 @property (nonatomic, readonly) CMDeviceMotion* deviceMotion;
 @property (nonatomic, readonly) NSTimeInterval totalDrivingTime;
-@property (nonatomic, readonly) BOOL isShaking;
+@property (nonatomic, readonly) BOOL isPickedUp;
 
 #pragma mark - Methods
 - (void)startDetection;
